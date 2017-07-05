@@ -8,7 +8,6 @@ var Agent = require('../lib/agent')
 var request = require('../lib/request')
 
 var opts = {
-  organizationId: 'some-org-id',
   appName: 'some-app-name',
   secretToken: 'secret',
   captureExceptions: false
@@ -49,18 +48,18 @@ test('#error()', function (t) {
   })
 
   t.test('without callback and successful request', function (t) {
-    zlib.deflate(body, function (err, buffer) {
+    zlib.gzip(body, function (err, buffer) {
       t.error(err)
       global.__opbeat_initialized = null
       var opbeat = new Agent()
       opbeat.start(opts)
-      var scope = nock('https://intake.opbeat.com')
+      var scope = nock('http://localhost:8080')
         .filteringRequestBody(function (body) {
           t.equal(body, buffer.toString('hex'))
           return 'ok'
         })
         .defaultReplyHeaders({'Location': 'foo'})
-        .post('/api/v1/organizations/some-org-id/apps/some-app-name/errors/', 'ok')
+        .post('/errors', 'ok')
         .reply(200)
       opbeat.on('logged', function (url) {
         scope.done()
@@ -72,18 +71,18 @@ test('#error()', function (t) {
   })
 
   t.test('with callback and successful request', function (t) {
-    zlib.deflate(body, function (err, buffer) {
+    zlib.gzip(body, function (err, buffer) {
       t.error(err)
       global.__opbeat_initialized = null
       var opbeat = new Agent()
       opbeat.start(opts)
-      var scope = nock('https://intake.opbeat.com')
+      var scope = nock('http://localhost:8080')
         .filteringRequestBody(function (body) {
           t.equal(body, buffer.toString('hex'))
           return 'ok'
         })
         .defaultReplyHeaders({'Location': 'foo'})
-        .post('/api/v1/organizations/some-org-id/apps/some-app-name/errors/', 'ok')
+        .post('/errors', 'ok')
         .reply(200)
       request.error(opbeat, data, function (err, url) {
         scope.done()
@@ -98,9 +97,9 @@ test('#error()', function (t) {
     global.__opbeat_initialized = null
     var opbeat = new Agent()
     opbeat.start(opts)
-    var scope = nock('https://intake.opbeat.com')
+    var scope = nock('http://localhost:8080')
       .filteringRequestBody(function () { return '*' })
-      .post('/api/v1/organizations/some-org-id/apps/some-app-name/errors/', '*')
+      .post('/errors', '*')
       .reply(500)
     opbeat.on('error', function (err) {
       helpers.restoreLogger()
@@ -117,9 +116,9 @@ test('#error()', function (t) {
     global.__opbeat_initialized = null
     var opbeat = new Agent()
     opbeat.start(opts)
-    var scope = nock('https://intake.opbeat.com')
+    var scope = nock('http://localhost:8080')
       .filteringRequestBody(function () { return '*' })
-      .post('/api/v1/organizations/some-org-id/apps/some-app-name/errors/', '*')
+      .post('/errors', '*')
       .reply(500)
     opbeat.on('error', function (err) {
       helpers.restoreLogger()
