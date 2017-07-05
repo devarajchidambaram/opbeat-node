@@ -3,4 +3,4 @@
 var assert = require('assert')
 var opbeat = require('../../..')
 
-assert.equal(opbeat.appId, 'from-file')
+assert.equal(opbeat.appName, 'from-file')
