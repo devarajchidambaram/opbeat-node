@@ -144,8 +144,7 @@ test('#transactions()', function (t) {
       t.end()
     }
     request.transactions(opbeat, {
-      transactions: [{ transaction: 1 }],
-      traces: { raw: [], groups: [] }
+      transactions: [{context: {}}]
     })
   })
 
@@ -157,8 +156,7 @@ test('#transactions()', function (t) {
       t.end()
     }
     request.transactions(opbeat, {
-      transactions: [{ transaction: 1 }],
-      traces: { raw: [], groups: [{ transaction: 1 }] }
+      transactions: [{context: {}}]
     })
   })
 
@@ -170,11 +168,7 @@ test('#transactions()', function (t) {
       t.end()
     }
     request.transactions(opbeat, {
-      transactions: [{ transaction: 'foo' }],
-      traces: {
-        raw: [],
-        groups: [{transaction: 'foo', extra: {_frames: [{context_line: 1}]}}]
-      }
+      transactions: [{context: {}, stacktrace: [{context_line: 1}]}]
     })
   })
 
@@ -186,11 +180,7 @@ test('#transactions()', function (t) {
       t.end()
     }
     request.transactions(opbeat, {
-      transactions: [{ transaction: 'foo' }],
-      traces: {
-        raw: [],
-        groups: [{transaction: 'foo', extra: {_frames: [{pre_context: [1]}]}}]
-      }
+      transactions: [{context: {}, stacktrace: [{pre_context: [1]}]}]
     })
   })
 
@@ -202,11 +192,7 @@ test('#transactions()', function (t) {
       t.end()
     }
     request.transactions(opbeat, {
-      transactions: [{ transaction: 'foo' }],
-      traces: {
-        raw: [],
-        groups: [{transaction: 'foo', extra: {_frames: [{post_context: [1]}]}}]
-      }
+      transactions: [{context: {}, stacktrace: [{post_context: [1]}]}]
     })
   })
 })

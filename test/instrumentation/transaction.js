@@ -84,7 +84,6 @@ test('#end() - no traces', function (t) {
     t.equal(added.ended, true)
     t.equal(added, trans)
     t.equal(trans.traces.length, 0)
-    t.deepEqual(trans.traces, [])
     t.end()
   })
   var trans = new Transaction(ins._agent)
@@ -174,9 +173,6 @@ test('name - default first, then custom', function (t) {
 test('parallel transactions', function (t) {
   var calls = 0
   var ins = mockInstrumentation(function (added) {
-    t.equal(added.traces.length, 0, added.name + ' should have 0 traces')
-    t.equal(added.traces[0], added._rootTrace)
-
     calls++
     if (calls === 1) {
       t.equal(added.name, 'second')
