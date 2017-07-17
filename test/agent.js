@@ -184,7 +184,7 @@ test('#setUserContext()', function (t) {
     opbeat.start()
     var trans = opbeat.startTransaction()
     t.equal(opbeat.setUserContext({foo: 1}), true)
-    t.deepEqual(trans._context, {user: {foo: 1}})
+    t.deepEqual(trans._user, {foo: 1})
     t.end()
   })
 })
@@ -202,7 +202,25 @@ test('#setExtraContext()', function (t) {
     opbeat.start()
     var trans = opbeat.startTransaction()
     t.equal(opbeat.setExtraContext({foo: 1}), true)
-    t.deepEqual(trans._context, {extra: {foo: 1}})
+    t.deepEqual(trans._extra, {foo: 1})
+    t.end()
+  })
+})
+
+test('#setTag()', function (t) {
+  t.test('no active transaction', function (t) {
+    setup()
+    opbeat.start()
+    t.equal(opbeat.setTag('foo', 1), false)
+    t.end()
+  })
+
+  t.test('active transaction', function (t) {
+    setup()
+    opbeat.start()
+    var trans = opbeat.startTransaction()
+    t.equal(opbeat.setTag('foo', 1), true)
+    t.deepEqual(trans._tags, {foo: '1'})
     t.end()
   })
 })

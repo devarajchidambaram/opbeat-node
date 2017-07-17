@@ -40,7 +40,8 @@ test('protocol.encode - single transaction', function (t) {
         request: null,
         system: {runtime_version: process.version},
         user: {foo: 1},
-        extra: {bar: 1}
+        extra: {bar: 1},
+        tags: {}
       })
       t.equal(trans.traces.length, 0)
     })
@@ -95,7 +96,8 @@ test('protocol.encode - multiple transactions', function (t) {
           request: null,
           system: {runtime_version: process.version},
           user: {},
-          extra: {}
+          extra: {},
+          tags: {}
         })
 
         t.equal(trans.traces.length, 2)
@@ -166,7 +168,8 @@ test('protocol.encode - http request meta data', function (t) {
         request: { cookies: { cookie1: 'foo', cookie2: 'bar' }, data: '[REDACTED]', headers: { host: 'example.com', 'user-agent': 'user-agent-header', 'content-length': 42, 'x-bar': 'baz', 'x-foo': 'bar' }, method: 'POST', query_string: 'bar=baz', remote_host: '127.0.0.1', secure: true, url: 'https://example.com/foo?bar=baz', user_agent: 'user-agent-header' },
         system: { runtime_version: process.version },
         user: {},
-        extra: {}
+        extra: {},
+        tags: {}
       })
       t.equal(trans.traces.length, 0)
     })
@@ -202,7 +205,8 @@ test('protocol.encode - disable stack traces', function (t) {
         request: null,
         system: {runtime_version: process.version},
         user: {},
-        extra: {}
+        extra: {},
+        tags: {}
       })
 
       t.equal(trans.traces.length, 1)
@@ -288,7 +292,8 @@ test('protocol.encode - truncated traces', function (t) {
         request: null,
         system: {runtime_version: process.version},
         user: {},
-        extra: {}
+        extra: {},
+        tags: {}
       })
 
       t.equal(trans.traces.length, 2)
